@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:optimus_case/home.dart';
+import 'package:optimus_case/util/dimen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -9,41 +12,39 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final mediaQuery = MediaQuery.of(context);
+    Dimen.getSizes(mediaQuery.size.width, mediaQuery.size.height);
+    // Sistem rengi ve stil ayarı
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarColor: isDarkMode ? const Color.fromRGBO(41, 58, 137, 1) : const Color.fromRGBO(212, 222, 241, 1),
+        statusBarIconBrightness: isDarkMode ? Brightness.dark : Brightness.light,
       ),
-      home: const MyHomePage(),
     );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark, // Light mod teması
+        primaryColor: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
+        cardColor: const Color.fromRGBO(212, 222, 241, 1),
+        hintColor: Colors.black,
+        focusColor: Colors.black,
       ),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-          ],
-        ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.light, // Dark mod teması
+        primaryColor: Colors.red,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 0, 28, 70),
+        cardColor: const Color.fromRGBO(41, 58, 137, 1),
+        primaryColorDark: Colors.white,
+        hintColor: Colors.white,
+        focusColor: Colors.white,
       ),
+      themeMode: ThemeMode.system,
+      home: const MyHomePage(),
     );
   }
 }

@@ -1,0 +1,33 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:provider/provider.dart';
+
+class RegisterView extends StatefulWidget {
+  const RegisterView({super.key});
+
+  @override
+  State<RegisterView> createState() => _RegisterViewState();
+}
+
+class _RegisterViewState extends State<RegisterView> {
+  late LandingViewModel viewModel;
+
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((values) => afterViewLoaded(context, viewModel));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider<LandingViewModel>(
+      create: (context) => LandingViewModel.ctx(context),
+      builder: (context, child) {
+        viewModel = Provider.of<LandingViewModel>(context);
+        return Scaffold();
+      },
+    );
+  }
+
+  afterViewLoaded(BuildContext context, LandingViewModel viewModel) {}
+}
